@@ -1,4 +1,4 @@
-#Inferior Mind
+# Inferior Mind
 
 Cazzaro Riccardo 
 5IE
@@ -9,9 +9,9 @@ e un bottone sottostante con cui il giocatore può verificare se la combinazione
 mentre la combinazione da indovinare rimane sempre nascosta.  
 Ogni volte che si preme il bottone di verifica i colori dei 4 pulsanti ritorneranno grigi (colore iniziale).
 
+<br> <br>
 
-
-##Scelte di sviluppo
+## Scelte di sviluppo
 
 **ElevatedButton**: con CircleBorder: cosi da creare bottoni circolari facilmente riconoscibili e interattivi
 
