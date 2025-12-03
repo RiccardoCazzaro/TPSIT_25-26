@@ -107,10 +107,12 @@ class _ChronoState extends State<Chrono> {
 @override
 Widget build(BuildContext context) {
   Icon iconaAvvio;
-  if (avvio) {
-    iconaAvvio = const Icon(Icons.stop);
-  } else {
+  if (!avvio) {
     iconaAvvio = const Icon(Icons.play_arrow);
+  } else if (avvio && !pausa) {
+    iconaAvvio = const Icon(Icons.stop);
+  }else{
+    iconaAvvio = const Icon(Icons.restart_alt);
   }
 
   Icon iconaPausa;
@@ -146,13 +148,12 @@ Widget build(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
-           backgroundColor: Colors.grey,
+           backgroundColor: avvio ? Colors.grey : Colors.grey.shade400,
            tooltip: "PAUSA / RIPRESA",
            child: iconaPausa,
            onPressed: () {
-             if (avvio) {
+             if (!avvio) return;
                pausaRiprendi();
-             }
            },
          ), 
 
@@ -163,10 +164,12 @@ Widget build(BuildContext context) {
            tooltip: "AVVIO / STOP / RESET",
            child: iconaAvvio,
            onPressed: () {
-            if (avvio) {
-               reset();
-             } else {
-               avvia();
+            if (!avvio) {
+              avvia();
+             } else if (avvio && !pausa) {
+                pausaRiprendi();
+              } else if (pausa) {
+              reset();
              }
            },
           ),
