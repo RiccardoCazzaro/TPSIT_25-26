@@ -15,18 +15,16 @@ void main() {
 }
 
 void handleConnection(Socket client) {
-  print("Connection from ${client.remoteAddress.address}:${client.remotePort}");
-
+  print("Connessione da ${client.remoteAddress.address}:${client.remotePort}");
   client.write("Sei connesso al server!\n");
   client.write("Inserisci il tuo nome utente:\n");
-
   ChatClient chatClient = ChatClient(client);
   clients.add(chatClient);
 }
 
 void removeClient(ChatClient c) {
   if (c.nomeUtente != "Anonimo") {
-    distributeMessage(c, "${c.nomeUtente} ha lasciato la chat.");
+    distributeMessage(c, "${c.nomeUtente} ha lasciato la chat");
   }
   print("Client disconnesso: ${c._address}:${c._port}");
   clients.remove(c);
@@ -35,7 +33,7 @@ void removeClient(ChatClient c) {
 void distributeMessage(ChatClient mittente, String message) {
   for (ChatClient c in clients) {
     if (c != mittente) {
-      c.write(message + "\n");
+    c.write("$message\n");
     }
   }
 }
@@ -50,7 +48,6 @@ class ChatClient {
 
   ChatClient(Socket s) {
     _socket = s;
-
     _socket.listen(
       messageHandler,
       onError: errorHandler,
@@ -71,7 +68,7 @@ class ChatClient {
       _nomeInserito = true;
 
       _socket.write("Benvenuto $nomeUtente!\n");
-      distributeMessage(this, "$nomeUtente è entrato nella chat.");
+      distributeMessage(this, "$nomeUtente è entrato nella chat");
       return;
     }
 
@@ -79,13 +76,13 @@ class ChatClient {
   }
 
   void errorHandler(error) {
-    print('${_address}:${_port} Error: $error');
+    print("$_address:$_port Error: $error");
     removeClient(this);
     _socket.close();
   }
 
   void finishedHandler() {
-    print('${_address}:${_port} Disconnected');
+    print("$_address:$_port Disconnesso");
     removeClient(this);
     _socket.close();
   }

@@ -29,6 +29,7 @@ class _ChatPageState extends State<ChatPage> {
 
   bool connesso = false;
   bool nomeInviato = false;
+  String nomeUtente = ""; 
 
   String host = "192.168.178.59";
   int port = 3000;
@@ -40,6 +41,7 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         connesso = false;
         nomeInviato = false;
+        nomeUtente = "";
         messaggi.clear();
       });
       aggiungi("Disconnesso dal server");
@@ -64,6 +66,7 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           connesso = false;
           nomeInviato = false;
+          nomeUtente = "";
         });
       }, onDone: () {
         aggiungi("Connessione chiusa dal server");
@@ -71,6 +74,7 @@ class _ChatPageState extends State<ChatPage> {
         setState(() {
           connesso = false;
           nomeInviato = false;
+          nomeUtente = "";
         });
       });
     }).catchError((e) {
@@ -78,12 +82,25 @@ class _ChatPageState extends State<ChatPage> {
       setState(() {
         connesso = false;
         nomeInviato = false;
+         nomeUtente = "";
       });
     });
   }
 
   void invia(String testo) {
-    if (connesso && testo.trim().isNotEmpty) socket?.write("$testo\n");
+     String t = testo.trim(); 
+    if (!connesso || t.isEmpty) return; 
+        if (nomeInviato) {
+            aggiungi("$nomeUtente: $t"); 
+            socket?.write("$t\n");
+        } else {
+           String nomeProposto = t;
+           setState(() {
+               nomeUtente = nomeProposto;
+               nomeInviato = true;
+             });
+         socket?.write("$nomeProposto\n"); 
+     }
   }
 
   void aggiungi(String msg) {
@@ -104,7 +121,6 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(title: const Text("Chat TCP Mobile")),
       body: Column(
         children: [
-          // Campo Nome + Pulsanti
           Row(
             children: [
               Expanded(
@@ -123,7 +139,7 @@ class _ChatPageState extends State<ChatPage> {
                       nomeController.clear();
                       setState(() => nomeInviato = true);
                     } else {
-                      aggiungi("⚠️ Nome non valido");
+                      aggiungi("Nome non valido");
                     }
                   },
                   child: const Text("Invia nome"),
@@ -137,7 +153,7 @@ class _ChatPageState extends State<ChatPage> {
 
           const SizedBox(height: 8),
 
-          // Messaggi
+        
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -151,7 +167,6 @@ class _ChatPageState extends State<ChatPage> {
 
           const SizedBox(height: 8),
 
-          // Campo Messaggio
           if (connesso && nomeInviato)
             Row(
               children: [

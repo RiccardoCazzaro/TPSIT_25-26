@@ -1,13 +1,19 @@
 import 'dart:io';
+
 late Socket clientSocket;
 
 void main() {
   Socket.connect("localhost", 3000).then((Socket sock) {
     clientSocket = sock;
-    clientSocket.listen(dataHandler,
-        onError: errorHandler, onDone: doneHandler, cancelOnError: false);
+    
+    clientSocket.listen(
+        dataHandler,
+        onError: errorHandler, 
+        onDone: doneHandler, 
+        cancelOnError: false);
+    
     stdin.listen(
-        (data) => clientSocket.write(String.fromCharCodes(data).trim() + '\n'));
+        (data) => clientSocket.write(String.fromCharCodes(data).trim() + '\n')); 
   }, onError: (e) {
     print("Impossibile connettersi: $e");
     exit(1);
