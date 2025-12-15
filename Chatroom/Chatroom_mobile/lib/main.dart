@@ -97,7 +97,7 @@ class _ChatPageState extends State<ChatPage> {
     String t = testo.trim();
     if (!connesso || t.isEmpty) return;
     if (nomeInviato) {
-      aggiungi("$nomeUtente: $t");
+      aggiungi(t);
       socket?.write("$t\n");
     } else {
       nomeUtente = t;
@@ -167,6 +167,7 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextField(
                     controller: nomeController,
+                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(hintText: "Nome"),
                     enabled: connesso && !nomeInviato,
                   ),
