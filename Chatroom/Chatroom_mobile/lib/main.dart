@@ -27,12 +27,16 @@ class _ChatPageState extends State<ChatPage> {
   TextEditingController nomeController = TextEditingController();
   TextEditingController messaggioController = TextEditingController();
 
+  TextEditingController ipController = TextEditingController();
+  TextEditingController portController = TextEditingController();
+  bool ipInserito = false;
+
   bool connesso = false;
   bool nomeInviato = false;
-  String nomeUtente = ""; 
+  String nomeUtente = "";
 
-  String host = "192.168.178.59";
-  int port = 3000;
+  String host = "";
+  int port = 0;
 
   void connettiODisconnetti() {
     if (connesso) {
@@ -43,6 +47,7 @@ class _ChatPageState extends State<ChatPage> {
         nomeInviato = false;
         nomeUtente = "";
         messaggi.clear();
+        ipInserito = false; 
       });
       aggiungi("Disconnesso dal server");
       return;
@@ -50,14 +55,17 @@ class _ChatPageState extends State<ChatPage> {
 
     Socket.connect(host, port).then((s) {
       socket = s;
-      setState(() => connesso = true);
-      aggiungi("✔ Connesso al server ${s.remoteAddress.address}:${s.remotePort}");
+      setState(() {
+        connesso = true;
+        ipInserito = true; 
+      });
+      aggiungi("Connesso al server ${s.remoteAddress.address}:${s.remotePort}");
 
       socket!.listen((data) {
         String text = utf8.decode(data);
         for (var riga in text.split("\n")) {
           riga = riga.trim();
-          if (riga.isEmpty) continue;
+          if (riga.isNotEmpty) 
           aggiungi(riga);
         }
       }, onError: (e) {
@@ -67,6 +75,7 @@ class _ChatPageState extends State<ChatPage> {
           connesso = false;
           nomeInviato = false;
           nomeUtente = "";
+          ipInserito = false; 
         });
       }, onDone: () {
         aggiungi("Connessione chiusa dal server");
@@ -75,32 +84,26 @@ class _ChatPageState extends State<ChatPage> {
           connesso = false;
           nomeInviato = false;
           nomeUtente = "";
+          ipInserito = false; 
         });
       });
     }).catchError((e) {
-      aggiungi(" Impossibile connettersi: $e");
-      setState(() {
-        connesso = false;
-        nomeInviato = false;
-         nomeUtente = "";
-      });
+      aggiungi("Impossibile connettersi");
+      setState(() => ipInserito = false); 
     });
   }
 
   void invia(String testo) {
-     String t = testo.trim(); 
-    if (!connesso || t.isEmpty) return; 
-        if (nomeInviato) {
-            aggiungi("$nomeUtente: $t"); 
-            socket?.write("$t\n");
-        } else {
-           String nomeProposto = t;
-           setState(() {
-               nomeUtente = nomeProposto;
-               nomeInviato = true;
-             });
-         socket?.write("$nomeProposto\n"); 
-     }
+    String t = testo.trim();
+    if (!connesso || t.isEmpty) return;
+    if (nomeInviato) {
+      aggiungi("$nomeUtente: $t");
+      socket?.write("$t\n");
+    } else {
+      nomeUtente = t;
+      nomeInviato = true;
+      socket?.write("$t\n");
+    }
   }
 
   void aggiungi(String msg) {
@@ -111,6 +114,8 @@ class _ChatPageState extends State<ChatPage> {
   void dispose() {
     nomeController.dispose();
     messaggioController.dispose();
+    ipController.dispose();     
+    portController.dispose();  
     socket?.destroy();
     super.dispose();
   }
@@ -121,48 +126,80 @@ class _ChatPageState extends State<ChatPage> {
       appBar: AppBar(title: const Text("Chat TCP Mobile")),
       body: Column(
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: nomeController,
-                  decoration: const InputDecoration(hintText: "Nome"),
-                  enabled: connesso && !nomeInviato,
+          if (!ipInserito)
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: ipController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: "IP"),
+                  ),
                 ),
-              ),
-              if (connesso && !nomeInviato)
+                SizedBox(
+                  width: 80,
+                  child: TextField(
+                    controller: portController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(hintText: "Porta"),
+                  ),
+                ),
                 ElevatedButton(
                   onPressed: () {
-                    String t = nomeController.text.trim();
-                    if (t.isNotEmpty) {
-                      invia(t);
-                      nomeController.clear();
-                      setState(() => nomeInviato = true);
-                    } else {
-                      aggiungi("Nome non valido");
+                    host = ipController.text.trim();
+                    port = int.tryParse(portController.text.trim()) ?? 0;
+                    if (host.isEmpty || port <= 0) {
+                      aggiungi("IP o porta non validi");
+                      return;
                     }
+              setState(() {
+                      messaggi.clear(); 
+            });
+                    connettiODisconnetti(); 
                   },
-                  child: const Text("Invia nome"),
+                  child: const Text("Invia IP"),
                 ),
-              ElevatedButton(
-                onPressed: connettiODisconnetti,
-                child: Text(connesso ? "Disconnetti" : "Connetti"),
-              ),
-            ],
-          ),
+              ],
+            ),
+          if (ipInserito)
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: nomeController,
+                    decoration: const InputDecoration(hintText: "Nome"),
+                    enabled: connesso && !nomeInviato,
+                  ),
+                ),
+                if (connesso && !nomeInviato)
+                  ElevatedButton(
+                    onPressed: () {
+                      String t = nomeController.text.trim();
+                      if (t.isNotEmpty) {
+                        invia(t);
+                        nomeController.clear();
+                      } else {
+                        aggiungi("Nome non valido");
+                      }
+                    },
+                    child: const Text("Invia nome"),
+                  ),
+                ElevatedButton(
+                  onPressed: connettiODisconnetti,
+                  child: Text(connesso ? "Disconnetti" : "Connetti"),
+                ),
+              ],
+            ),
 
           const SizedBox(height: 8),
 
-        
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (var m in messaggi) Text(m),
-                ],
-              ),
-            ),
+         Expanded(
+            child: ListView(
+            children: [
+            for (var m in messaggi)
+                Text(m),
+               ],
+             ),
           ),
 
           const SizedBox(height: 8),
