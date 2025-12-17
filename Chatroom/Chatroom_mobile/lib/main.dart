@@ -132,7 +132,6 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextField(
                     controller: ipController,
-                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(hintText: "IP"),
                   ),
                 ),
@@ -140,7 +139,6 @@ class _ChatPageState extends State<ChatPage> {
                   width: 80,
                   child: TextField(
                     controller: portController,
-                    keyboardType: TextInputType.number,
                     decoration: const InputDecoration(hintText: "Porta"),
                   ),
                 ),
@@ -167,7 +165,6 @@ class _ChatPageState extends State<ChatPage> {
                 Expanded(
                   child: TextField(
                     controller: nomeController,
-                    keyboardType: TextInputType.text,
                     decoration: const InputDecoration(hintText: "Nome"),
                     enabled: connesso && !nomeInviato,
                   ),

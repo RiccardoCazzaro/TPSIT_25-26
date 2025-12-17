@@ -16,7 +16,6 @@ void main() {
 
 void handleConnection(Socket client) {
   print("Connessione da ${client.remoteAddress.address}:${client.remotePort}");
-  client.write("Sei connesso al server!\n");
   client.write("Inserisci il tuo nome utente:\n");
   ChatClient chatClient = ChatClient(client);
   clients.add(chatClient);
