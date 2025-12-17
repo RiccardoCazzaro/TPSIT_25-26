@@ -10,8 +10,7 @@ void main() {
         dataHandler,
         onError: errorHandler, 
         onDone: doneHandler, 
-        cancelOnError: false);
-    
+    );    
     stdin.listen(
         (data) => clientSocket.write(String.fromCharCodes(data).trim() + '\n')); 
   }, onError: (e) {
