@@ -1,25 +1,31 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'dart:async';
 
 
 void main() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Chrono(),
-  ));
+  runApp(const MyApp());
 }
 
+class MyApp extends StatelessWidget {
+  const MyApp({super.key}); 
+
+  @override
+  Widget build(BuildContext context) {  
+    return const MaterialApp(     
+    debugShowCheckedModeBanner: false,
+    home: Chrono(),
+  );
+  }
+}
 
 class Chrono extends StatefulWidget {
   const Chrono({super.key});
 
   @override
-  State<Chrono> createState() {
-    return _ChronoState();
-  }
+  State<Chrono> createState() => _Chrono();
 }
 
-class _ChronoState extends State<Chrono> {
+class _Chrono extends State<Chrono> {
   String displayTempo = "00:00";   
   bool avvio = false;              
   bool pausa = false;              
