@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-
 import 'model.dart';
 
 class TodoListNotifier with ChangeNotifier {
@@ -7,8 +6,14 @@ class TodoListNotifier with ChangeNotifier {
 
   int get length => _todos.length;
 
+
   void addTodo(String name) {
     _todos.add(Todo(name: name, checked: false));
+    notifyListeners();
+  }
+
+  void updateTodo(Todo todo, String newName) { 
+    todo.name = newName;
     notifyListeners();
   }
 

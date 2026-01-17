@@ -9,28 +9,45 @@ class TodoItem extends StatelessWidget {
 
   final Todo todo;
 
-  TextStyle? _getTextStyle(bool checked) {
+    TextStyle? _getTextStyle(bool checked) {
     if (!checked) return null;
-
     return const TextStyle(
-      color: Colors.black45,
+      color: Colors.black,
       decoration: TextDecoration.lineThrough,
     );
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
-    final TodoListNotifier notifier = context.watch<TodoListNotifier>();
+    final TodoListNotifier notifier = context.read<TodoListNotifier>();
 
-    return ListTile(
-      onTap: () {
-        notifier.changeTodo(todo);
-      },
-      onLongPress: (() {
-        notifier.deleteTodo(todo);
-      }),
-      leading: CircleAvatar(child: Text(todo.name[0])),
-      title: Text(todo.name, style: _getTextStyle(todo.checked)),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      child: Row(
+        children: [
+          Checkbox( 
+            value: todo.checked,
+            onChanged: (bool? value) {
+              notifier.changeTodo(todo);
+            },
+          ),
+          Expanded(
+            child: TextField( 
+              controller: TextEditingController(text: todo.name),
+              onChanged: (text) => notifier.updateTodo(todo, text),
+              decoration: const InputDecoration(
+                border: InputBorder.none, 
+                hintText: "Nota...",
+              ),
+              style: _getTextStyle(todo.checked),
+            ),
+          ),
+          IconButton( 
+            icon: const Icon(Icons.close, size: 20),
+            onPressed: () => notifier.deleteTodo(todo),
+          ),
+        ],
+      ),
     );
   }
 }

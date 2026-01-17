@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'model.dart';
 import 'notifier.dart';
+import 'widgets.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,25 +10,24 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'todo list', // campo pernuovo todo
-
+    return MaterialApp( 
+      debugShowCheckedModeBanner:false,
+      title: 'todo list',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
       home: ChangeNotifierProvider<TodoListNotifier>(
         create: (notifier) => TodoListNotifier(),
-        child: const MyHomePage(title: 'todo list'),
+        child: const MyHomePage(title: "Esercizio TODO List"),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, this.title});
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -37,7 +36,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final TextEditingController _newTodoController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,69 +44,29 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        centerTitle: true,
+        backgroundColor: Colors.red[100],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: notifier.length,
-              itemBuilder: (context, index) {
-                Todo todo = notifier.getTodo(index);
-
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          value: todo.isDone,
-                          onChanged: (value) {
-                            notifier.toggleTodoDone(index);
-                          },
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            initialValue: todo.text,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                            ),
-                            onFieldSubmitted: (newText) {
-                              notifier.updateTodoText(index, newText);
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Card(
+        child: Column( 
+            children: [
+              for (int i = 0; i < notifier.length; i++)
+                TodoItem(todo: notifier.getTodo(i)),
+              if (notifier.length == 0)
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text("aggiungi una nuova nota (schiaccia +)"),
+                )
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _newTodoController,
-                    decoration:
-                        const InputDecoration(hintText: 'Inserisci nuovo todo'),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          if (_newTodoController.text.isNotEmpty) {
-            notifier.addTodo(_newTodoController.text);
-            _newTodoController.clear();
-          }
+        notifier.addTodo("");
         },
       ),
     );
