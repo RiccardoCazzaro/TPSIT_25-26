@@ -8,8 +8,9 @@ class TodoItem extends StatelessWidget {
   TodoItem({required this.todo}) : super(key: ObjectKey(todo));
 
   final Todo todo;
+  final TextEditingController todoController = TextEditingController();
 
-    TextStyle? _getTextStyle(bool checked) {
+  TextStyle? _getTextStyle(bool checked) {
     if (!checked) return null;
     return const TextStyle(
       color: Colors.black,
@@ -17,7 +18,7 @@ class TodoItem extends StatelessWidget {
     );
   }
 
-@override
+  @override
   Widget build(BuildContext context) {
     final TodoListNotifier notifier = context.read<TodoListNotifier>();
 
@@ -25,24 +26,24 @@ class TodoItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
-          Checkbox( 
+          Checkbox(
             value: todo.checked,
             onChanged: (bool? value) {
               notifier.changeTodo(todo);
             },
           ),
           Expanded(
-            child: TextField( 
-              controller: TextEditingController(text: todo.name),
+            child: TextField(
+              controller: todoController,
               onChanged: (text) => notifier.updateTodo(todo, text),
               decoration: const InputDecoration(
-                border: InputBorder.none, 
+                border: InputBorder.none,
                 hintText: "Nota...",
               ),
               style: _getTextStyle(todo.checked),
             ),
           ),
-          IconButton( 
+          IconButton(
             icon: const Icon(Icons.close, size: 20),
             onPressed: () => notifier.deleteTodo(todo),
           ),
