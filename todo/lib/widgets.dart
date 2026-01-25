@@ -8,7 +8,6 @@ class TodoItem extends StatelessWidget {
   TodoItem({required this.todo}) : super(key: ObjectKey(todo));
 
   final Todo todo;
-  final TextEditingController todoController = TextEditingController();
 
   TextStyle? _getTextStyle(bool checked) {
     if (!checked) return null;
@@ -33,8 +32,8 @@ class TodoItem extends StatelessWidget {
             },
           ),
           Expanded(
-            child: TextField(
-              controller: todoController,
+            child: TextFormField(
+              initialValue: todo.name,
               onChanged: (text) => notifier.updateTodo(todo, text),
               decoration: const InputDecoration(
                 border: InputBorder.none,

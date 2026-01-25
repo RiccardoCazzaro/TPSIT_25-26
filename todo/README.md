@@ -12,6 +12,6 @@ Applicazione Todo ispirata a Google Keep.<br>Permette di aggiungere, modificare,
 
 ## Scelte di sviluppo
 - **Card + Column invece di ListView.builder:** stile simile a Google Keep.
-- **TextField inline per il testo dei Todo** 
+- **TextFormField inline per il testo dei Todo**(al posto del TextField): mancanza di controller manuali
 - **Checkbox per completamento** 
 - **IconButton per eliminare nota**
