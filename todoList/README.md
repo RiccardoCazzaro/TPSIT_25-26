@@ -3,13 +3,13 @@
 Cazzaro Riccardo 5IE
 
 ## Descrizione
-Applicazione Todo ispirata a Google Keep.<br>Permette di aggiungere, modificare, completare ed eliminare note Todo  
-- Card dentro cui si possono aggiungere, modificare ed eliminare note
-- Tutte le note create sono visualizzate dentro le card
-- Puoi creare più card con all'interno più note
-- Tap sul testo per modificarlo direttamente (TextFormField)
-- Checkbox per segnare come completato la nota
-- FloatingActionButton per aggiungere nuove card
-- dentro le card pulsante (+) con cui puoi aggiungere card
+L'applicazione è una versione semplificata di Google Keep. Permette all'utente di organizzare i propri impegni attraverso "Note" (Card) che contengono al loro interno liste di sotto-attività (Todo).
 
-## Scelte di sviluppo
+- Card dentro cui si possono aggiungere, modificare ed eliminare todo
+- Tutti todo creati sono visualizzate dentro le card
+- Puoi creare più card con all'interno più todo
+- Tap sul testo per modificare direttamente il titolo della card o il testo del todo 
+- Checkbox per segnare come completato la sotto-attività
+- tasto x in ongi sotto-attività per eliminarla 
+- dentro le card pulsante (+) con cui puoi aggiungere todo
+
