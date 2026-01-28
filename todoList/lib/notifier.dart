@@ -7,12 +7,12 @@ class TodoListNotifier with ChangeNotifier {
   int get length => _notes.length;
 
   void addNote(String title) {
-    _notes.add(Note(title: title, todos: []));
+    _notes.add(Note(title: title, todos: [], titleController: TextEditingController()));
     notifyListeners();
   }
 
   void addTodoToNote(int noteIndex, String name) {
-    _notes[noteIndex].todos.add(Todo(name: name, checked: false));
+    _notes[noteIndex].todos.add(Todo(name: name, checked: false, controller: TextEditingController()));
     notifyListeners();
   }
 
@@ -31,8 +31,7 @@ class TodoListNotifier with ChangeNotifier {
     notifyListeners();
   }
 
-  Note getNote(int index) => _notes[index];
-
-  Todo getTodoFromNote(int noteIndex, int todoIndex) =>
-      _notes[noteIndex].todos[todoIndex];
+  Note getNote(int index) {
+    return _notes[index];
+  }
 }

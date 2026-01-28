@@ -63,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
-          notifier.addNote("Nuova Nota");
+          notifier.addNote("NotaNuova ");
         },
       ),
     );

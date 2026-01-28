@@ -11,20 +11,28 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<TodoListNotifier>();
-
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
         children: [
           ListTile(
-            title: Text(note.title),
+            title: TextField(
+              controller: note.titleController, 
+              onChanged: (text) {
+                note.title = text;
+              },
+              decoration: const InputDecoration(
+                hintText: "Titolo nota",
+                border: InputBorder.none,
+              ),
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
           ),
           Column(
             children: [
               for (int i = 0; i < note.todos.length; i++)
                 TodoItem(
                     todo: note.todos[i], noteIndex: noteIndex, todoIndex: i),
-              if (note.todos.length < 3)
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
@@ -48,6 +56,14 @@ class TodoItem extends StatelessWidget {
   final int noteIndex;
   final int todoIndex;
 
+  TextStyle? _getTextStyle(bool checked) {
+    if (!checked) return null;
+    return const TextStyle(
+      color: Colors.black,
+      decoration: TextDecoration.lineThrough,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<TodoListNotifier>();
@@ -56,9 +72,15 @@ class TodoItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: Row(
         children: [
+          Checkbox(
+            value: todo.checked,
+            onChanged: (bool? value) {
+              notifier.changeTodoStatus(noteIndex, todo);
+            },
+          ),
           Expanded(
-            child: TextFormField(
-              initialValue: todo.name,
+            child: TextField(
+              controller: todo.controller, 
               onChanged: (text) {
                 notifier.updateTodo(noteIndex, todo, text);
               },
@@ -66,7 +88,12 @@ class TodoItem extends StatelessWidget {
                 border: InputBorder.none,
                 hintText: "Scrivi qua",
               ),
+               style: _getTextStyle(todo.checked),
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close, size: 20),
+            onPressed: () => notifier.deleteTodoFromNote(noteIndex, todo),  //modifica
           ),
         ],
       ),
