@@ -11,6 +11,11 @@ class TodoListNotifier with ChangeNotifier {
     notifyListeners();
   }
 
+   void deleteNote(int noteIndex) {
+    _notes.removeAt(noteIndex);
+    notifyListeners();
+  }
+
   void addTodoToNote(int noteIndex, String name) {
     _notes[noteIndex].todos.add(Todo(name: name, checked: false, controller: TextEditingController()));
     notifyListeners();

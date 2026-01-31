@@ -32,13 +32,25 @@ class NoteCard extends StatelessWidget {
             children: [
               for (int i = 0; i < note.todos.length; i++)
                 TodoItem(
-                    todo: note.todos[i], noteIndex: noteIndex, todoIndex: i),
+                    todo: note.todos[i], noteIndex: noteIndex),
+              Row(
+                   children: [
                 IconButton(
                   icon: const Icon(Icons.add),
+                  tooltip: "Aggiungi todo",
                   onPressed: () {
                     notifier.addTodoToNote(noteIndex, "Nuovo Todo");
                   },
                 ),
+               IconButton(
+                  icon: const Icon(Icons.delete),
+                  tooltip: "Elimina nota",
+                  onPressed: () {
+                    notifier.deleteNote(noteIndex);
+                  },
+                ),
+                   ],
+              ),
             ],
           ),
         ],
@@ -49,12 +61,11 @@ class NoteCard extends StatelessWidget {
 
 class TodoItem extends StatelessWidget {
   TodoItem(
-      {required this.todo, required this.noteIndex, required this.todoIndex})
+      {required this.todo, required this.noteIndex})
       : super(key: ObjectKey(todo));
 
   final Todo todo;
   final int noteIndex;
-  final int todoIndex;
 
   TextStyle? _getTextStyle(bool checked) {
     if (!checked) return null;

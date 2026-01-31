@@ -19,17 +19,15 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
       ),
       home: ChangeNotifierProvider<TodoListNotifier>(
+        child: const MyHomePage(),
         create: (context) => TodoListNotifier(),
-        child: const MyHomePage(title: "Esercizio TODO List"),
       ),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -42,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: const Text("Todo List Application"),
         centerTitle: true,
         backgroundColor: Colors.red[100],
       ),
