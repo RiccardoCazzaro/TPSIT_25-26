@@ -104,7 +104,7 @@ class TodoItem extends StatelessWidget {
           ),
           IconButton(
             icon: const Icon(Icons.close, size: 20),
-            onPressed: () => notifier.deleteTodoFromNote(noteIndex, todo),  //modifica
+            onPressed: () => notifier.deleteTodoFromNote(noteIndex, todo), 
           ),
         ],
       ),
