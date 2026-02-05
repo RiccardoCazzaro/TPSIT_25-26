@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart'; 
 import 'notifier.dart';
 import 'widgets.dart';
 
 void main() {
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -33,6 +37,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+      @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => context.read<TodoListNotifier>().loadFromDb());
+  }
+  
   @override
   Widget build(BuildContext context) {
     final TodoListNotifier notifier = context.watch<TodoListNotifier>();
@@ -41,12 +52,20 @@ class _MyHomePageState extends State<MyHomePage> {
           title: const Text("Todo List Application"),
           centerTitle: true,
           backgroundColor: Colors.red[100]),
+
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
+        child: Center(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 16.0,
+            runSpacing: 16.0,
           children: [
             for (int i = 0; i < notifier.length; i++)
-              NoteCard(note: notifier.getNote(i), noteIndex: i),
+            SizedBox(
+              width: 400,
+              child: NoteCard(note: notifier.getNote(i), noteIndex: i),
+              ),
             if (notifier.length == 0)
               const Padding(
                   padding: EdgeInsets.all(16.0),
@@ -54,9 +73,10 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => notifier.addNote("NotaNuova"),
+        onPressed: () => notifier.addNote(""),
       ),
     );
   }

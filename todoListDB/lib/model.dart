@@ -32,9 +32,11 @@ class Todo {
 
 class Note {
   Note(
-      {required this.title,
+      {this.id,
+      required this.title,
       required this.todos,
       required this.titleController});
+  int? id;
   String title;
   List<Todo> todos;
   final TextEditingController titleController;

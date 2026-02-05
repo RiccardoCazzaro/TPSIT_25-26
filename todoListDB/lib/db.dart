@@ -38,24 +38,28 @@ class DatabaseHelper {
     await db.delete('notes', where: 'id = ?', whereArgs: [id]);
   }
 
-  static Future<List<Todo>> getTodosForNote(int noteId) async {
+  static Future<List<Todo>> getTodos(int noteId) async {
     final db = await init();
     final List<Map<String, dynamic>> result =
         await db.query('todos', where: 'note_id = ?', whereArgs: [noteId]);
     return result.map((row) => Todo.fromMap(row)).toList();
   }
 
-  static Future<void> insertTodo(Todo todo, int noteId) async {
+  static Future<int> insertTodo(Todo todo, int noteId) async {
     final db = await init();
-    Map<String, dynamic> data = todo.toMap();
+    var data = todo.toMap();
     data['note_id'] = noteId;
-    await db.insert('todos', data);
+    return await db.insert('todos', data);
   }
 
   static Future<void> updateTodo(Todo todo) async {
     final db = await init();
-    await db
-        .update('todos', todo.toMap(), where: 'id = ?', whereArgs: [todo.id]);
+    await db.update('todos', todo.toMap(), where: 'id = ?', whereArgs: [todo.id]);
+  }
+
+   static Future<void> updateNoteTitle(Note note, String newTitle) async {
+    final db = await init();
+    await db.update('notes', {'title': newTitle}, where: 'id = ?', whereArgs: [note.id]);
   }
 
   static Future<void> deleteTodo(int id) async {

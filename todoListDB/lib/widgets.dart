@@ -19,8 +19,8 @@ class NoteCard extends StatelessWidget {
             title: TextField(
               controller: note.titleController,
               onChanged: (text) {
-                note.title = text;
-              },
+                notifier.updateNoteTitle(note, text);              
+                },
               decoration: const InputDecoration(
                 hintText: "Titolo nota",
                 border: InputBorder.none,
@@ -38,7 +38,7 @@ class NoteCard extends StatelessWidget {
                     icon: const Icon(Icons.add),
                     tooltip: "Aggiungi todo",
                     onPressed: () {
-                      notifier.addTodoToNote(noteIndex, "Nuovo Todo");
+                      notifier.addTodoToNote(noteIndex, "");
                     },
                   ),
                   IconButton(
@@ -103,7 +103,7 @@ class TodoItem extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.close, size: 20),
             onPressed: () {
-              notifier.deleteTodoFromNote(noteIndex, todo);
+              notifier.deleteTodo(noteIndex, todo);
             },
           ),
         ],
