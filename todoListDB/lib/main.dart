@@ -6,8 +6,6 @@ import 'widgets.dart';
 
 void main() {
   databaseFactory = databaseFactoryFfi;
-
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -36,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
       
   void initState() {
     final notifier = context.read<TodoListNotifier>();
@@ -45,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
   
   @override
   Widget build(BuildContext context) {
-    final TodoListNotifier notifier = context.watch<TodoListNotifier>();
+    final notifier = context.watch<TodoListNotifier>();
     return Scaffold(
       appBar: AppBar(
           title: const Text("Todo List Application"),
