@@ -5,7 +5,6 @@ import 'notifier.dart';
 import 'widgets.dart';
 
 void main() {
-  sqfliteFfiInit();
   databaseFactory = databaseFactoryFfi;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,11 +37,11 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-      @override
+      
   void initState() {
-    super.initState();
-    Future.microtask(() => context.read<TodoListNotifier>().loadFromDb());
-  }
+    final notifier = context.read<TodoListNotifier>();
+    notifier.loadFromDb();
+    }
   
   @override
   Widget build(BuildContext context) {
