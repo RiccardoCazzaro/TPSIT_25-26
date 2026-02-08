@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'todo list',
       theme:
           ThemeData(colorScheme: ColorScheme.fromSeed(seedColor: Colors.red)),
-      home: ChangeNotifierProvider<TodoListNotifier>(
+      home: ChangeNotifierProvider(
         create: (context) => TodoListNotifier(),
         child: const MyHomePage(),
       ),
@@ -35,6 +35,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
       
+  @override
   void initState() {
     final notifier = context.read<TodoListNotifier>();
     notifier.loadFromDb();
