@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "products": [
+    {
+      "id": "1",
+      "name": "Martello",
+      "description": "Martello da carpentiere 500g",
+      "category": "Utensileria",
+      "price": 12.99,
+      "n": 50
+    },
+    {
+      "id": "2",
+      "name": "Cacciavite a stella",
+      "description": "Cacciavite Phillips misura 2",
+      "category": "Utensileria",
+      "price": 5.49,
+      "n": 120
+    },
+    {
+      "id": "3",
+      "name": "Vite M6x20",
+      "description": "Vite a testa esagonale M6 lunghezza 20mm",
+      "category": "Bulloneria",
+      "price": 0.15,
+      "n": 1000
+    },
+    {
+      "id": "4",
+      "name": "Nastro isolante",
+      "description": "Nastro isolante nero 19mm x 10m",
+      "category": "Elettrica",
+      "price": 2.30,
+      "n": 200
+    },
+    {
+      "id": "5",
+      "name": "Guanti da lavoro",
+      "description": "Guanti protettivi taglia L",
+      "category": "DPI",
+      "price": 8.75,
+      "n": 75
+    }
+  ]
+}
