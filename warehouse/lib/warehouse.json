@@ -7,7 +7,7 @@
       "description": "Martello da carpentiere 500g",
       "category": "Utensileria",
       "price": 12.99,
-      "n": 50
+      "n": 59
     },
     {
       "id": "2",
@@ -23,14 +23,14 @@
       "description": "Vite a testa esagonale M6 lunghezza 20mm",
       "category": "Bulloneria",
       "price": 0.15,
-      "n": 1000
+      "n": 1300
     },
     {
       "id": "4",
       "name": "Nastro isolante",
       "description": "Nastro isolante nero 19mm x 10m",
       "category": "Elettrica",
-      "price": 2.30,
+      "price": 2.3,
       "n": 200
     },
     {
@@ -39,7 +39,8 @@
       "description": "Guanti protettivi taglia L",
       "category": "DPI",
       "price": 8.75,
-      "n": 75
+      "n": 76
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

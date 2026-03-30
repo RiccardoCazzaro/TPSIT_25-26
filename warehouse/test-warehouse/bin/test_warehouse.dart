@@ -1,10 +1,10 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:http/http.dart' as http; 
+import 'dart:convert'; 
 
-
-//verificare funzionamento nn so se va boh
 void main() async {
-  final url = Uri.parse('http://localhost:3000/products');
+  final url = Uri.parse(
+    'http://localhost:3000/products',
+  ); 
 
   print('--- TEST STEP 1: WAREHOUSE REST ---');
 
@@ -13,15 +13,22 @@ void main() async {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      final List prodotti = jsonDecode(response.body);
+      final List prodotti = jsonDecode(
+        response.body,
+      ); 
       print('Successo! Trovati ${prodotti.length} prodotti.');
-      print('Esempio primo prodotto: ${prodotti.first['name']}');
-    }
+      print(
+        'Esempio primo prodotto: ${prodotti.first['name']}',
+      );}
 
     print('\n2. Test modifica (aggiornamento quantità prodotto ID 1)...');
     final resPut = await http.put(
-      Uri.parse('http://localhost:3000/products/1'),
-      headers: {'Content-Type': 'application/json'},
+      Uri.parse(
+        'http://localhost:3000/products/1',
+      ), 
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: jsonEncode({
         "id": "1",
         "name": "Martello",

@@ -1,44 +1,39 @@
 class Product {
-  final String id;
-  final String name;
-  final String description;
-  final String category;
-  final double price;
-  final int n;
+  String id;
+  String nome;
+  String descrizione;
+  String categoria;
+  double prezzo;
+  int quantita;
 
   Product({
     required this.id,
-    required this.name,
-    required this.description,
-    required this.category,
-    required this.price,
-    required this.n,
+    required this.nome,
+    required this.descrizione,
+    required this.categoria,
+    required this.prezzo,
+    required this.quantita,
   });
 
-  factory Product.fromJson(Map<String, dynamic> json) => Product(
-    id: json['id'].toString(),
-    name: json['name'],
-    description: json['description'],
-    category: json['category'],
-    price: (json['price'] as num).toDouble(),
-    n: json['n'] as int,
-  );
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['id'].toString(),
+      nome: json['name'],
+      descrizione: json['description'],
+      categoria: json['category'],
+      prezzo: (json['price'] as num).toDouble(),
+      quantita: json['n'] as int,
+    );
+  }
 
-  Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'description': description,
-    'category': category,
-    'price': price,
-    'n': n,
-  };
-
-  Product copyWith({int? n}) => Product(
-    id: id,
-    name: name,
-    description: description,
-    category: category,
-    price: price,
-    n: n ?? this.n,
-  );
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': nome,
+      'description': descrizione,
+      'category': categoria,
+      'price': prezzo,
+      'n': quantita,
+    };
+  }
 }
