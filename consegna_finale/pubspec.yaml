@@ -1,0 +1,31 @@
+name: proggetto_finale
+description: "Futsal Mini Manager - Progetto Finale"
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # REST API
+  http: ^1.2.0
+
+  # SQLite
+  sqflite: ^2.3.0
+  path: ^1.9.0
+
+  # State management semplice
+  provider: ^6.1.2
+  sqflite_common_ffi: ^2.4.0+2
+  sqlite3_flutter_libs: ^0.6.0+eol
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
