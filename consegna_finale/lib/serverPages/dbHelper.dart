@@ -1,5 +1,5 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
+import "package:sqflite/sqflite.dart";
+import "package:path/path.dart";
 
 class DBService {
   static Database? _db;
@@ -14,27 +14,35 @@ class DBService {
     return openDatabase(
       path,
       version: 1,
-      onCreate: (db, _) async {
+      onCreate: (db, version) async {
         await db.execute("""
-        CREATE TABLE players (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          name TEXT, number INTEGER,
-          is_syncronized INTEGER DEFAULT 0
-        )
-      """);
+          CREATE TABLE players (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            number INTEGER,
+            foot TEXT,
+            team TEXT,
+            is_syncronized INTEGER DEFAULT 0
+          )
+        """);
         await db.execute("""
-        CREATE TABLE matches (
-          id INTEGER PRIMARY KEY AUTOINCREMENT,
-          opponent TEXT, date TEXT,
-          goals_for INTEGER, goals_against INTEGER,
-          is_syncronized INTEGER DEFAULT 0
-        )
-      """);
+          CREATE TABLE matches (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            opponent TEXT,
+            date TEXT,
+            goals_for INTEGER,
+            goals_against INTEGER,
+            league_position INTEGER,
+            is_syncronized INTEGER DEFAULT 0
+          )
+        """);
       },
     );
   }
 
- static Future<void> clearPlayers() async {
+  //PLAYERS
+
+  static Future<void> clearPlayers() async {
     (await getDb()).delete("players");
   }
 
@@ -50,13 +58,15 @@ class DBService {
     (await getDb()).update("players", data, where: "id=?", whereArgs: [id]);
   }
 
-  static Future<void> patchPlayer(int id, Map<String, dynamic> fields) async {
-    (await getDb()).update("players", fields, where: "id=?", whereArgs: [id]);
+  static Future<void> patchPlayer(int id, Map<String, dynamic> data) async {
+    (await getDb()).update("players", data, where: "id=?", whereArgs: [id]);
   }
 
   static Future<void> deletePlayer(int id) async {
     (await getDb()).delete("players", where: "id=?", whereArgs: [id]);
   }
+
+  // MATCHES 
 
   static Future<void> clearMatches() async {
     (await getDb()).delete("matches");
@@ -70,11 +80,9 @@ class DBService {
     return (await getDb()).query("matches");
   }
 
-
   static Future<void> updateMatch(int id, Map<String, dynamic> data) async {
     (await getDb()).update("matches", data, where: "id=?", whereArgs: [id]);
   }
-
 
   static Future<void> patchMatch(int id, Map<String, dynamic> fields) async {
     (await getDb()).update("matches", fields, where: "id=?", whereArgs: [id]);
@@ -84,4 +92,3 @@ class DBService {
     (await getDb()).delete("matches", where: "id=?", whereArgs: [id]);
   }
 }
-
