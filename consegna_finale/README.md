@@ -58,9 +58,6 @@ Entrambe le pagine hanno la stessa struttura:
 | Destra | `IconButton` matita  | Apre il form precompilato per modificare |
 | Destra | `IconButton` cestino 🗑️ | Elimina l'elemento |
 
->il cestino è **grigio e disabilitato** se l'elemento è sincronizzato (`is_syncronized = 1`) e il server non è raggiungibile, per evitare di eliminare localmente qualcosa che esiste ancora sul server. È **rosso e attivo** se si è online oppure se l'elemento è solo locale (`is_syncronized = 0`).
-
-
 ### Pagina Aggiungi / Modifica (add_player / add_match)
 
 - **TextField** per ogni campo (nome, numero, squadra, avversario, gol, ecc.)
